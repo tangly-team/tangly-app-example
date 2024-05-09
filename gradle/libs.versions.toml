@@ -1,0 +1,34 @@
+[versions]
+javalin-version = '5.6.4'
+log4j2-version = '2.23.0'
+openapi-version = "5.6.4"
+vaadin-version = "24.3.11"
+
+[libraries]
+tangly-apps = { module = "net.tangly:apps", version = "0.2.7" }
+tangly-core = { module = "net.tangly:core", version = "0.2.7" }
+tangly-ui = { module = "net.tangly:ui", version = "0.2.7" }
+
+jetbrains-annotations = "org.jetbrains:annotations:24.1.0"
+vaadin-boot = "com.github.mvysny.vaadin-boot:vaadin-boot:12.2"
+vaadin-core = { module = "com.vaadin:vaadin-core", version.ref = "vaadin-version" }
+junit-jupiter-engine = "org.junit.jupiter:junit-jupiter-engine:5.10.2"
+junit-platform-launcher = "org.junit.platform:junit-platform-launcher:1.10.2"
+
+vaadin-pdfviewer = "org.vaadin.addons.componentfactory:vcf-pdf-viewer:2.8.1"
+vaadin-socharts = "com.storedobject.chart:so-charts:3.2.5"
+
+apache-log4j2-api = { module = "org.apache.logging.log4j:log4j-api", version.ref = "log4j2-version" }
+apache-log4j2-core = { module = "org.apache.logging.log4j:log4j-core", version.ref = "log4j2-version" }
+
+javalin = { module = "io.javalin:javalin", version.ref = "javalin-version" }
+javalin-openapi = { module = "io.javalin.community.openapi:javalin-openapi-plugin", version.ref = "openapi-version" }
+javalin-openapi-processor = { module = "io.javalin.community.openapi:openapi-annotation-processor", version.ref = "openapi-version" }
+javalin-swagger = { module = "io.javalin.community.openapi:javalin-swagger-plugin", version.ref = "openapi-version" }
+
+vaadin-embedded-jetty = "com.github.mvysny.vaadin-boot:vaadin-boot:12.2"
+kaributesting = "com.github.mvysny.kaributesting:karibu-testing-v24:2.1.5"
+
+[plugins]
+vaadin = { id = "com.vaadin", version.ref = "vaadin-version" }
+

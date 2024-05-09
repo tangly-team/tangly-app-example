@@ -1,0 +1,46 @@
+# Cover general excluded files (binary artifacts and OS specific files)
+.DS_Store
+*.bat
+*.class
+*.lock
+*.log
+*.war
+*.ear
+*.zip
+*.tar.gz
+*.rar
+*.iml
+hs_err_pid*
+
+# Covers JetBrains IDE IntelliJ using gradle, include copyrights
+**/.idea/
+**/.gradle/
+**/out/
+**/build/
+**/target/
+**/node_modules/
+**/.asciidoctor/
+
+# Covers vaadin specifics
+**/jspm_packages/
+**/pnpm-lock.yaml
+**/pnpmfile.js
+**/webpack.config.js
+**/webpack.generated.js
+**/.npmrc
+**/frontend/index.html
+**/frontend/generated/
+**/dev-bundle/
+**/.pnpmfile.cjs
+**/package.json
+**/package-lock.json
+**/tsconfig.json
+**/vite.config.ts
+**/vite.generated.ts
+**/types.d.ts
+
+# Covers other tools such JabRef, microstream, revealjs
+/storage/
+**/references.bib.sav
+**/Gemfile.lock
+**/.bundle/
