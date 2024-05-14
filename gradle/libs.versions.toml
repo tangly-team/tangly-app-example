@@ -6,6 +6,7 @@ vaadin-version = "24.3.11"
 
 [libraries]
 tangly-apps = { module = "net.tangly:apps", version = "0.2.7" }
+tangly-commons = { module = "net.tangly:commons", version = "0.2.7" }
 tangly-core = { module = "net.tangly:core", version = "0.2.7" }
 tangly-ui = { module = "net.tangly:ui", version = "0.2.7" }
 

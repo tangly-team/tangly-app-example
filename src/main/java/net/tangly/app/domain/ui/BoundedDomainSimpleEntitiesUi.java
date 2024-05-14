@@ -19,15 +19,15 @@ import com.vaadin.flow.component.contextmenu.MenuItem;
 import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.menubar.MenuBar;
 import net.tangly.app.domain.model.BoundedDomainSimpleEntities;
+import net.tangly.commons.lang.functional.LazyReference;
 import net.tangly.core.*;
 import net.tangly.core.providers.Provider;
 import net.tangly.ui.app.domain.BoundedDomainUi;
 import net.tangly.ui.components.EntityForm;
 import net.tangly.ui.components.EntityView;
+import net.tangly.ui.components.ItemView;
 import net.tangly.ui.components.Mode;
 import org.jetbrains.annotations.NotNull;
-
-import java.util.Objects;
 
 /**
  * Test user interface when the domain entities are modeled with Java record. The first entities are editable, the second entities are displayed as readonly items.
@@ -35,8 +35,8 @@ import java.util.Objects;
  * These visual classes have logic to display all properties of a simple entity.</p>
  */
 public class BoundedDomainSimpleEntitiesUi extends BoundedDomainUi<BoundedDomainSimpleEntities> {
-    private final EntityOneView entityOneView;
-    private final EntityTwoView entityTwoView;
+    private final LazyReference<EntityOneView> entityOneView;
+    private final LazyReference<EntityTwoView> entityTwoView;
     private Component currentView;
 
     /**
@@ -46,9 +46,11 @@ public class BoundedDomainSimpleEntitiesUi extends BoundedDomainUi<BoundedDomain
      */
     public BoundedDomainSimpleEntitiesUi(BoundedDomainSimpleEntities domain) {
         super(domain);
-        entityOneView = new EntityOneView(BoundedDomainSimpleEntities.SimpleEntityOne.class, domain, domain.realm().oneEntities(), Mode.VIEW);
-        entityTwoView = new EntityTwoView(BoundedDomainSimpleEntities.simpleEntityTwo.class, domain, domain.realm().twoEntities(), Mode.EDIT);
-        currentView = entityOneView;
+        entityOneView = new LazyReference<>(() -> new EntityOneView(BoundedDomainSimpleEntities.SimpleEntityOne.class, domain, domain.realm().oneEntities(),
+                Mode.VIEW));
+        entityTwoView = new LazyReference<>(() -> new EntityTwoView(BoundedDomainSimpleEntities.simpleEntityTwo.class, domain, domain.realm().twoEntities(),
+                Mode.EDIT));
+        currentView(entityOneView);
     }
 
     @Override
@@ -57,20 +59,20 @@ public class BoundedDomainSimpleEntitiesUi extends BoundedDomainUi<BoundedDomain
         SubMenu subMenu = menuItem.getSubMenu();
         subMenu.addItem("Entity One", e -> select(layout, entityOneView));
         subMenu.addItem("Entity Two", e -> select(layout, entityTwoView));
-        select(layout, currentView);
+        select(layout);
     }
 
     @Override
-    public void select(@NotNull AppLayout layout, Component view) {
-        currentView = Objects.isNull(view) ? currentView : view;
-        layout.setContent(currentView);
+    public void refreshViews() {
+        entityOneView.ifPresent(ItemView::refresh);
+        entityTwoView.ifPresent(ItemView::refresh);
     }
 
     static class EntityOneView extends EntityView<BoundedDomainSimpleEntities.SimpleEntityOne> {
         public EntityOneView(@NotNull Class<BoundedDomainSimpleEntities.SimpleEntityOne> entityClass, @NotNull BoundedDomainSimpleEntities domain,
                              @NotNull Provider<BoundedDomainSimpleEntities.SimpleEntityOne> provider, @NotNull Mode mode) {
             super(entityClass, domain, provider, mode);
-            form(new EntityOneForm(this));
+            form(() -> new EntityOneForm(this));
             initEntityView();
         }
 
@@ -83,7 +85,7 @@ public class BoundedDomainSimpleEntitiesUi extends BoundedDomainUi<BoundedDomain
             @Override
             protected BoundedDomainSimpleEntities.SimpleEntityOne createOrUpdateInstance(BoundedDomainSimpleEntities.SimpleEntityOne entity) {
                 return new BoundedDomainSimpleEntities.SimpleEntityOne(fromBinder(HasOid.OID), fromBinder(HasId.ID), fromBinder(HasName.NAME),
-                    DateRange.of(fromBinder(HasDateRange.FROM), fromBinder(HasDateRange.TO)), fromBinder(HasText.TEXT));
+                        DateRange.of(fromBinder(HasDateRange.FROM), fromBinder(HasDateRange.TO)), fromBinder(HasText.TEXT));
             }
         }
     }
@@ -92,7 +94,7 @@ public class BoundedDomainSimpleEntitiesUi extends BoundedDomainUi<BoundedDomain
         public EntityTwoView(@NotNull Class<BoundedDomainSimpleEntities.simpleEntityTwo> entityClass, @NotNull BoundedDomainSimpleEntities domain,
                              @NotNull Provider<BoundedDomainSimpleEntities.simpleEntityTwo> provider, @NotNull Mode mode) {
             super(entityClass, domain, provider, mode);
-            form(new EntityTwoForm(this));
+            form(() -> new EntityTwoForm(this));
             initEntityView();
         }
 
@@ -105,7 +107,7 @@ public class BoundedDomainSimpleEntitiesUi extends BoundedDomainUi<BoundedDomain
             @Override
             protected BoundedDomainSimpleEntities.simpleEntityTwo createOrUpdateInstance(BoundedDomainSimpleEntities.simpleEntityTwo entity) {
                 return new BoundedDomainSimpleEntities.simpleEntityTwo(fromBinder(HasOid.OID), fromBinder(HasId.ID), fromBinder(HasName.NAME),
-                    DateRange.of(fromBinder(HasDateRange.FROM), fromBinder(HasDateRange.TO)), fromBinder(HasText.TEXT));
+                        DateRange.of(fromBinder(HasDateRange.FROM), fromBinder(HasDateRange.TO)), fromBinder(HasText.TEXT));
             }
 
         }

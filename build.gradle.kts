@@ -29,6 +29,7 @@ dependencies {
     }
 
     implementation(libs.tangly.apps)
+    implementation(libs.tangly.commons)
     implementation(libs.tangly.core)
     implementation(libs.tangly.ui)
 
@@ -43,7 +44,6 @@ dependencies {
         exclude(group = "org.eclipse.jetty.websocket")
         exclude(group = "com.fasterxml.jackson.core")
     }
-
 
     implementation(libs.apache.log4j2.api)
 

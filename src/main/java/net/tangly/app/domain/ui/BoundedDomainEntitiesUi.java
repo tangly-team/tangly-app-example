@@ -13,7 +13,6 @@
 
 package net.tangly.app.domain.ui;
 
-import com.vaadin.flow.component.Component;
 import com.vaadin.flow.component.applayout.AppLayout;
 import com.vaadin.flow.component.combobox.ComboBox;
 import com.vaadin.flow.component.contextmenu.MenuItem;
@@ -21,26 +20,26 @@ import com.vaadin.flow.component.contextmenu.SubMenu;
 import com.vaadin.flow.component.formlayout.FormLayout;
 import com.vaadin.flow.component.menubar.MenuBar;
 import net.tangly.app.domain.model.BoundedDomainEntities;
+import net.tangly.commons.lang.functional.LazyReference;
 import net.tangly.core.providers.Provider;
 import net.tangly.ui.app.domain.BoundedDomainUi;
 import net.tangly.ui.app.domain.DomainView;
 import net.tangly.ui.components.*;
 import org.jetbrains.annotations.NotNull;
 
-import java.util.Objects;
-
 public class BoundedDomainEntitiesUi extends BoundedDomainUi<BoundedDomainEntities> {
-    private final EntityThreeView entityThreeView;
-    private final EntityFourView entityFourView;
-    private final DomainView domainView;
-    private transient Component currentView;
+    private final LazyReference<EntityThreeView> entityThreeView;
+    private final LazyReference<EntityFourView> entityFourView;
+    private final LazyReference<DomainView> domainView;
 
     public BoundedDomainEntitiesUi(@NotNull BoundedDomainEntities domain) {
         super(domain);
-        entityThreeView = new EntityThreeView(BoundedDomainEntities.EntityThree.class, domain, domain.realm().threeEntities(), Mode.VIEW);
-        entityFourView = new EntityFourView(BoundedDomainEntities.EntityFour.class, domain, domain.realm().fourEntities(), Mode.EDIT);
-        domainView = new DomainView(domain);
-        currentView = entityThreeView;
+        entityThreeView = new LazyReference<>(() -> new EntityThreeView(BoundedDomainEntities.EntityThree.class, domain, domain.realm().threeEntities(),
+                Mode.VIEW));
+        entityFourView = new LazyReference<>(() -> new EntityFourView(BoundedDomainEntities.EntityFour.class, domain, domain.realm().fourEntities(),
+                Mode.EDIT));
+        domainView = new LazyReference<>(() -> new DomainView(domain));
+        currentView(entityThreeView);
     }
 
     @Override
@@ -50,20 +49,20 @@ public class BoundedDomainEntitiesUi extends BoundedDomainUi<BoundedDomainEntiti
         subMenu.addItem("Entity Three", e -> select(layout, entityThreeView));
         subMenu.addItem("Entity Four", e -> select(layout, entityFourView));
         addAdministration(layout, menuBar, domainView, null);
-        select(layout, currentView);
+        select(layout);
     }
 
     @Override
-    public void select(@NotNull AppLayout layout, Component view) {
-        currentView = Objects.isNull(view) ? currentView : view;
-        layout.setContent(currentView);
+    public void refreshViews() {
+        entityThreeView.ifPresent(ItemView::refresh);
+        entityFourView.ifPresent(ItemView::refresh);
     }
 
     static class EntityThreeView extends EntityView<BoundedDomainEntities.EntityThree> {
         public EntityThreeView(@NotNull Class<BoundedDomainEntities.EntityThree> entityClass, @NotNull BoundedDomainEntities domain,
                                @NotNull Provider<BoundedDomainEntities.EntityThree> provider, Mode mode) {
             super(entityClass, domain, provider, mode);
-            form(new EntityThreeForm(this));
+            form(() -> new EntityThreeForm(this));
             initEntityView();
         }
 
@@ -79,7 +78,7 @@ public class BoundedDomainEntitiesUi extends BoundedDomainUi<BoundedDomainEntiti
         public EntityFourView(@NotNull Class<BoundedDomainEntities.EntityFour> entityClass, @NotNull BoundedDomainEntities domain,
                               @NotNull Provider<BoundedDomainEntities.EntityFour> provider, Mode mode) {
             super(entityClass, domain, provider, mode);
-            form(new EntityFourForm(this));
+            form(() -> new EntityFourForm(this));
             initEntityView();
         }
 

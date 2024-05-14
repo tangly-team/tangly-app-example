@@ -217,8 +217,21 @@ public class BoundedDomainEntities
             this.realm = realm;
         }
 
+        @Override
         public AppRealm realm() {
             return realm;
+        }
+
+        @Override
+        public void importEntities() {
+        }
+
+        @Override
+        public void exportEntities() {
+        }
+
+        @Override
+        public void clearEntities() {
         }
     }
 
