@@ -67,6 +67,9 @@ tasks.withType<JavaCompile>().configureEach {
     options.compilerArgs.add("--enable-preview")
 }
 
+project.tasks.named("vaadinPrepareFrontend").get().dependsOn("sourcesJar")
+
+
 tasks.withType<JavaExec>().configureEach {
     jvmArgs("--enable-preview")
 }

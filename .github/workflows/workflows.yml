@@ -16,4 +16,4 @@ jobs:
             java-version: '22'
             cache: 'gradle'
       -   run: |
-            ./gradlew build test
+            ./gradlew build
