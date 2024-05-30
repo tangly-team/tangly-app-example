@@ -93,7 +93,7 @@ public class BoundedDomainEntities
     /**
      * Entity Three demonstrates oid, id, name, time interval, text, comment and tag features.
      */
-    public static class EntityThree extends EntityExtendedImp implements EntityExtended {
+    public static class EntityThree extends MutableEntityExtendedImp implements MutableEntityExtended {
         public EntityThree(long oid) {
             super(oid);
         }
@@ -103,7 +103,7 @@ public class BoundedDomainEntities
      * Entity Four demonstrates entity abstraction and code features. An entity has an oid, id, name, time interval, text, comments and tags. The one-to-one and one-to-many
      * relations are also demonstrated.
      */
-    public static class EntityFour extends EntityExtendedImp implements EntityExtended {
+    public static class EntityFour extends MutableEntityExtendedImp implements MutableEntityExtended {
         private ActivityCode activity;
         private EntityThree one2one;
         private final List<EntityThree> one2many;

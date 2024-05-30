@@ -76,7 +76,12 @@ tasks.withType<Test>().configureEach {
         exceptionFormat = TestExceptionFormat.FULL
     }
     jvmArgs("--enable-preview")
+}
 
+tasks.withType<Javadoc> {
+    val javadocOptions = options as CoreJavadocOptions
+    javadocOptions.addStringOption("source", "22")
+    javadocOptions.addBooleanOption("-enable-preview", true)
 }
 
 application {

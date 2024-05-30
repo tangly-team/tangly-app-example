@@ -22,7 +22,7 @@ import net.tangly.app.domain.model.BoundedDomainSimpleEntities;
 import net.tangly.core.providers.Provider;
 
 public class BoundedDomainSimpleEntitiesPortRest implements BoundedDomainRest {
-    static final String PREFIX = STR."/rest/\{BoundedDomainSimpleEntities.DOMAIN.toLowerCase()}/entitiesones";
+    static final String PREFIX = STR."/rest/\{BoundedDomainSimpleEntities.DOMAIN.toLowerCase()}/entities-ones";
 
     BoundedDomainSimpleEntities domain;
 
@@ -47,7 +47,7 @@ public class BoundedDomainSimpleEntitiesPortRest implements BoundedDomainRest {
     @OpenApi(
         summary = "Get all entities",
         operationId = "getAllEntitiesOne",
-        path = "/entitiesones",
+        path = "/entities-ones",
         methods = HttpMethod.GET,
         tags = {"SimpleEntityOne"},
         responses = {
@@ -61,7 +61,7 @@ public class BoundedDomainSimpleEntitiesPortRest implements BoundedDomainRest {
     @OpenApi(
         summary = "Get an entity by id",
         operationId = "getEntityOneById",
-        path = "/entitiesones/:id",
+        path = "/entities-ones/:id",
         methods = HttpMethod.GET,
         tags = {"SimpleEntityOne"},
         pathParams = {
@@ -79,7 +79,7 @@ public class BoundedDomainSimpleEntitiesPortRest implements BoundedDomainRest {
     @OpenApi(
         summary = "Create entity",
         operationId = "createSimpleEntityOne",
-        path = "/simpleenttities",
+        path = "/simple-entities",
         methods = HttpMethod.POST,
         tags = {"SimpleEntityOne"},
         requestBody = @OpenApiRequestBody(content = {@OpenApiContent(from = BoundedDomainSimpleEntities.SimpleEntityOne.class)}),
@@ -97,7 +97,7 @@ public class BoundedDomainSimpleEntitiesPortRest implements BoundedDomainRest {
     @OpenApi(
         summary = "Update an entity identified by ID",
         operationId = "updateUserById",
-        path = "/simpleenttities/:id",
+        path = "/simple-entities/:id",
         methods = HttpMethod.PATCH,
         pathParams = {
             @OpenApiParam(name = "id",  required = true, type = String.class, description = "The entity identifier")
@@ -119,7 +119,7 @@ public class BoundedDomainSimpleEntitiesPortRest implements BoundedDomainRest {
     @OpenApi(
         summary = "delete entity by ID",
         operationId = "updateUserById",
-        path = "/simpleenttities/:id",
+        path = "/simple-entities/:id",
         methods = HttpMethod.DELETE,
         pathParams = {
             @OpenApiParam(name = "id",  required = true, type = String.class, description = "The entity identifier")

@@ -78,7 +78,7 @@ public class BoundedDomainSimpleEntitiesUi extends BoundedDomainUi<BoundedDomain
 
         public static class EntityOneForm extends EntityForm<BoundedDomainSimpleEntities.SimpleEntityOne, EntityOneView> {
             public EntityOneForm(@NotNull EntityOneView parent) {
-                super(parent, null);
+                super(parent);
                 initEntityForm();
             }
 
@@ -100,14 +100,13 @@ public class BoundedDomainSimpleEntitiesUi extends BoundedDomainUi<BoundedDomain
 
         public static class EntityTwoForm extends EntityForm<BoundedDomainSimpleEntities.simpleEntityTwo, EntityTwoView> {
             public EntityTwoForm(@NotNull EntityTwoView parent) {
-                super(parent, null);
+                super(parent);
                 initEntityForm();
             }
 
             @Override
             protected BoundedDomainSimpleEntities.simpleEntityTwo createOrUpdateInstance(BoundedDomainSimpleEntities.simpleEntityTwo entity) {
-                return new BoundedDomainSimpleEntities.simpleEntityTwo(fromBinder(HasOid.OID), fromBinder(HasId.ID), fromBinder(HasName.NAME),
-                        DateRange.of(fromBinder(HasDateRange.FROM), fromBinder(HasDateRange.TO)), fromBinder(HasText.TEXT));
+                return new BoundedDomainSimpleEntities.simpleEntityTwo(oid(), id(), name(), dateRange(), text());
             }
 
         }

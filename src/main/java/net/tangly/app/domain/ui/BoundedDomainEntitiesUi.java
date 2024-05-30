@@ -66,7 +66,7 @@ public class BoundedDomainEntitiesUi extends BoundedDomainUi<BoundedDomainEntiti
             initEntityView();
         }
 
-        public static class EntityThreeForm extends EntityForm<BoundedDomainEntities.EntityThree, EntityThreeView> {
+        public static class EntityThreeForm extends MutableEntityForm<BoundedDomainEntities.EntityThree, EntityThreeView> {
             public EntityThreeForm(@NotNull EntityThreeView parent) {
                 super(parent, BoundedDomainEntities.EntityThree::new);
                 initEntityForm();
@@ -87,7 +87,7 @@ public class BoundedDomainEntitiesUi extends BoundedDomainUi<BoundedDomainEntiti
             return (BoundedDomainEntities) super.domain();
         }
 
-        public static class EntityFourForm extends EntityForm<BoundedDomainEntities.EntityFour, EntityFourView> {
+        public static class EntityFourForm extends MutableEntityForm<BoundedDomainEntities.EntityFour, EntityFourView> {
             private One2OneField<BoundedDomainEntities.EntityThree> one2one;
             private One2ManyReferencesField<BoundedDomainEntities.EntityThree> one2Many;
             private ComboBox<BoundedDomainEntities.ActivityCode> code;
@@ -95,6 +95,14 @@ public class BoundedDomainEntitiesUi extends BoundedDomainUi<BoundedDomainEntiti
             public EntityFourForm(@NotNull EntityFourView parent) {
                 super(parent, BoundedDomainEntities.EntityFour::new);
                 init();
+            }
+
+            @Override
+            public void mode(@NotNull Mode mode) {
+                super.mode(mode);
+                one2Many.mode(mode);
+                code.setReadOnly(mode.readonly());
+                one2one.setReadOnly(mode.readonly());
             }
 
             private void init() {
@@ -113,14 +121,6 @@ public class BoundedDomainEntitiesUi extends BoundedDomainUi<BoundedDomainEntiti
                 FormLayout one2many = new FormLayout();
                 one2many.add(one2Many);
                 addTabAt("one2many", one2many, 2);
-            }
-
-            @Override
-            public void mode(@NotNull Mode mode) {
-                super.mode(mode);
-                one2Many.mode(mode);
-                code.setReadOnly(mode.readonly());
-                one2one.setReadOnly(mode.readonly());
             }
         }
     }
